@@ -36,9 +36,9 @@ class Tigrish_SimpleSitemaps {
 		add_action( 'delete_post', array(&$this, 'DeleteSitemap'), 15 );
 
 		// Ping Google on new post or post delete
-		add_action( 'publish_post', array(&$this, 'PingGoogle'), 16 );
-		add_action( 'publish_page', array(&$this, 'PingGoogle'), 16 );
-		add_action( 'delete_post', array(&$this, 'PingGoogle'), 16 );
+		add_action( 'publish_post', array(&$this, 'PingEngines'), 16 );
+		add_action( 'publish_page', array(&$this, 'PingEngines'), 16 );
+		add_action( 'delete_post', array(&$this, 'PingEnginese'), 16 );
 	}
 
 
@@ -48,15 +48,32 @@ class Tigrish_SimpleSitemaps {
 		@unlink( ABSPATH . 'wp-content/blogs.dir/' . $wpdb->blogid . '/files/sitemap.xml' );
 	}
 
+	// Notify search engines of a sitemap change
+	function PingEngines() {
+		$this->PingGoogle();
+		$this->PingBing();
+		$this->PingAsk();
+	}
 
 	// Notify Google of a sitemap change
 	function PingGoogle() {
 		global $wpdb;
-
 		$pingurl = 'http://www.google.com/webmasters/sitemaps/ping?sitemap=' . urlencode( get_bloginfo('url') . '/sitemap.xml' );
-
-		// Until WP(MU) 2.7 comes along with it's HTTP API, file_get_contents() should do for now (hopefully)
-		@file_get_contents( $pingurl );
+		@file_get_contents( $pingurl ); // Until WP(MU) 2.7 comes along with it's HTTP API, file_get_contents() should do for now (hopefully)
+	}
+	
+	// Notify Bing of a sitemap change
+	function PingBing() {
+		global $wpdb;
+		$pingurl = 'http://www.bing.com/webmaster/ping.aspx?siteMap=' . urlencode( get_bloginfo('url') . '/sitemap.xml' );
+		@file_get_contents( $pingurl ); // Until WP(MU) 2.7 comes along with it's HTTP API, file_get_contents() should do for now (hopefully)
+	}
+	
+	// Notify Ask of a sitemap change
+	function PingAsk() {
+		global $wpdb;
+		$pingurl = 'http://submissions.ask.com/ping?sitemap=' . urlencode( get_bloginfo('url') . '/sitemap.xml' );
+		@file_get_contents( $pingurl ); // Until WP(MU) 2.7 comes along with it's HTTP API, file_get_contents() should do for now (hopefully)
 	}
 
 
