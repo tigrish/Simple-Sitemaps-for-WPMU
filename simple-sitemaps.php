@@ -26,6 +26,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 class Tigrish_SimpleSitemaps {
 	var $totalposts = 25; // Number of posts to display
+	var $maxlinks = 500; // Maximum number of links to include in the sitemap file
 
 	// Plugin initialization
 	function Tigrish_SimpleSitemaps() {
@@ -65,17 +66,18 @@ class Tigrish_SimpleSitemaps {
 
 		switch_to_blog( $wpdb->blogid );
 
-		$site_pages  = get_posts( 'numberposts=-1&post_type=page');
-		$site_posts  = get_posts( 'numberposts=' . $this->totalposts . '&orderby=date&order=DESC' );
-		$latestposts = array_merge($site_pages, $site_posts);
+		$site_pages   = get_posts( 'numberposts=-1&post_type=page&order_by=menu_order' );
+		$numberposts  = $this->maxlinks - count($site_pages);
+		$site_posts   = get_posts( 'numberposts=' . $numberposts . '&orderby=date&order=DESC' );
+		$linked_items = array_merge($site_posts, $site_pages); // posts are first
 
 		$content  = '<?xml version="1.0" encoding="UTF-8"?' . ">\n";
 		$content .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
 
 		$priority = 1;
-		$prioritydiff = 1 / $this->totalposts;
+		$prioritydiff = 1 / count($linked_items);
 
-		foreach ( $latestposts as $post ) {
+		foreach ( $linked_items as $post ) {
 			$content .= "	<url>\n";
 			$content .= '		<loc>' . get_permalink( $post->ID ) . "</loc>\n";
 			$content .= '		<lastmod>' . mysql2date( 'Y-m-d\TH:i:s', $post->post_modified_gmt ) . "+00:00</lastmod>\n";
