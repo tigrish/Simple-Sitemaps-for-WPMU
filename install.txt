@@ -1,10 +1,8 @@
-Plugin Name: Simple Sitemaps & All In One SEO
-Author: Andrew Billits
+Plugin Name: Simple Sitemaps for WPMU
+Author: Christopher Dell
 
 Files:
 ----------------------------------------------------------------------
-/all-in-one-seo-pack/ - goes in /wp-content/mu-plugins
-all_in_one_seo_pack.php - goes in /wp-content/mu-plugins
 simple-sitemaps.php - goes in /wp-content/mu-plugins
 sitemap.php - goes in /wp-content
 

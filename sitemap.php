@@ -2,13 +2,13 @@
 /*
 Plugin Name:  Simple Sitemaps For WPMU
 Description:  On-demand sitemaps for WPMU.
-Version:      2008.09.24 22:49 PST
-Author:       Viper007Bond (Incsub)
-Author URI:   http://incsub.com/
+Version:      2009.10.04 17:00 CET
+Author:       Christopher Dell (tigrish)
+Author URI:   http://tigrish.com/
 */
 
 /* 
-Copyright 2007-2009 Incsub (http://incsub.com)
+Copyright 2007-2009 Tigrish (http://tigrish.com)
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License (Version 2 - GPLv2) as published by
@@ -35,10 +35,10 @@ if ( file_exists( $cachefile ) ) {
 	echo "\n<!-- Sitemap was loaded from a cached file -->";
 } else {
 
-	if ( !class_exists('Incsub_SimpleSitemaps') )
+	if ( !class_exists('Tigrish_SimpleSitemaps') )
 		exit('Plugin missing.');
 
-	$content = $Incsub_SimpleSitemaps->GenerateSitemap( $wpdb->blogid );
+	$content = $Tigrish_SimpleSitemaps->GenerateSitemap( $wpdb->blogid );
 
 	header( 'Content-type: text/xml; charset=utf-8' );
 	echo $content;

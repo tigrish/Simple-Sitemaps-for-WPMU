@@ -2,13 +2,13 @@
 /*
 Plugin Name:  Simple Sitemaps For WPMU
 Description:  On-demand sitemaps for WPMU.
-Version:      2008.09.24 23:41 PST
-Author:       Viper007Bond (Incsub)
-Author URI:   http://incsub.com/
+Version:      2009.10.04 17:00 CET
+Author:       Christopher Dell (tigrish)
+Author URI:   http://tigrish.com/
 */
 
 /* 
-Copyright 2007-2009 Incsub (http://incsub.com)
+Copyright 2009 Tigrish (http://tigrish.com)
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License (Version 2 - GPLv2) as published by
@@ -24,17 +24,19 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-class Incsub_SimpleSitemaps {
+class Tigrish_SimpleSitemaps {
 	var $totalposts = 25; // Number of posts to display
 
 	// Plugin initialization
-	function Incsub_SimpleSitemaps() {
+	function Tigrish_SimpleSitemaps() {
 		// Delete cached sitemaps on new post or post delete
 		add_action( 'publish_post', array(&$this, 'DeleteSitemap'), 15 );
+		add_action( 'publish_page', array(&$this, 'DeleteSitemap'), 15 );
 		add_action( 'delete_post', array(&$this, 'DeleteSitemap'), 15 );
 
 		// Ping Google on new post or post delete
 		add_action( 'publish_post', array(&$this, 'PingGoogle'), 16 );
+		add_action( 'publish_page', array(&$this, 'PingGoogle'), 16 );
 		add_action( 'delete_post', array(&$this, 'PingGoogle'), 16 );
 	}
 
@@ -63,7 +65,9 @@ class Incsub_SimpleSitemaps {
 
 		switch_to_blog( $wpdb->blogid );
 
-		$latestposts = get_posts( 'numberposts=' . $this->totalposts . '&orderby=date&order=DESC' );
+		$site_pages  = get_posts( 'numberposts=-1&post_type=page');
+		$site_posts  = get_posts( 'numberposts=' . $this->totalposts . '&orderby=date&order=DESC' );
+		$latestposts = array_merge($site_pages, $site_posts);
 
 		$content  = '<?xml version="1.0" encoding="UTF-8"?' . ">\n";
 		$content .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
@@ -105,7 +109,7 @@ class Incsub_SimpleSitemaps {
 }
 
 // Start this plugin after everything else is loaded
-add_action( 'plugins_loaded', 'Incsub_SimpleSitemaps' ); function Incsub_SimpleSitemaps() { global $Incsub_SimpleSitemaps; $Incsub_SimpleSitemaps = new Incsub_SimpleSitemaps(); }
+add_action( 'plugins_loaded', 'Tigrish_SimpleSitemaps' ); function Tigrish_SimpleSitemaps() { global $Tigrish_SimpleSitemaps; $Tigrish_SimpleSitemaps = new Tigrish_SimpleSitemaps(); }
 
 
 
