@@ -1,0 +1,18 @@
+Plugin Name: Simple Sitemaps & All In One SEO
+Author: Andrew Billits
+
+Files:
+----------------------------------------------------------------------
+/all-in-one-seo-pack/ - goes in /wp-content/mu-plugins
+all_in_one_seo_pack.php - goes in /wp-content/mu-plugins
+simple-sitemaps.php - goes in /wp-content/mu-plugins
+sitemap.php - goes in /wp-content
+
+
+Instructions:
+----------------------------------------------------------------------
+1) Place the files in the specified directories
+2) Add the following to your .htaccess under the line that handles uploaded files:
+RewriteRule ^(.*/)?sitemap.xml wp-content/sitemap.php [L]
+
+Sitemaps will be at domain.tld/sitemap.xml
