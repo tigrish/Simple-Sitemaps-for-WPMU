@@ -66,7 +66,7 @@ class Tigrish_SimpleSitemaps {
 
 		switch_to_blog( $wpdb->blogid );
 
-		$site_pages   = get_posts( 'numberposts=-1&post_type=page&order_by=menu_order' );
+		$site_pages   = get_posts( 'numberposts=-1&post_type=page&orderby=menu_order' );
 		$numberposts  = $this->maxlinks - count($site_pages);
 		$site_posts   = get_posts( 'numberposts=' . $numberposts . '&orderby=date&order=DESC' );
 		$linked_items = array_merge($site_posts, $site_pages); // posts are first
