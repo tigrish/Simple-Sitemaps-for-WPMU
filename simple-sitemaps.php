@@ -33,12 +33,12 @@ class Tigrish_SimpleSitemaps {
 		// Delete cached sitemaps on new post or post delete
 		add_action( 'publish_post', array(&$this, 'DeleteSitemap'), 15 );
 		add_action( 'publish_page', array(&$this, 'DeleteSitemap'), 15 );
-		add_action( 'delete_post', array(&$this, 'DeleteSitemap'), 15 );
+		add_action( 'delete_post',  array(&$this, 'DeleteSitemap'), 15 );
 
 		// Ping Google on new post or post delete
 		add_action( 'publish_post', array(&$this, 'PingEngines'), 16 );
 		add_action( 'publish_page', array(&$this, 'PingEngines'), 16 );
-		add_action( 'delete_post', array(&$this, 'PingEnginese'), 16 );
+		add_action( 'delete_post',  array(&$this, 'PingEngines'), 16 );
 	}
 
 
