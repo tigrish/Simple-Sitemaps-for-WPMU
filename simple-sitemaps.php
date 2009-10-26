@@ -53,6 +53,7 @@ class Tigrish_SimpleSitemaps {
 		$this->PingGoogle();
 		$this->PingBing();
 		$this->PingAsk();
+		$this->PingYahoo();
 	}
 
 	// Notify Google of a sitemap change
@@ -69,13 +70,19 @@ class Tigrish_SimpleSitemaps {
 		@file_get_contents( $pingurl ); // Until WP(MU) 2.7 comes along with it's HTTP API, file_get_contents() should do for now (hopefully)
 	}
 	
-	// Notify Ask of a sitemap change
-	function PingAsk() {
-		global $wpdb;
-		$pingurl = 'http://submissions.ask.com/ping?sitemap=' . urlencode( get_bloginfo('url') . '/sitemap.xml' );
-		@file_get_contents( $pingurl ); // Until WP(MU) 2.7 comes along with it's HTTP API, file_get_contents() should do for now (hopefully)
-	}
-
+  // Notify Ask of a sitemap change
+  function PingAsk() {
+    global $wpdb;
+    $pingurl = 'http://submissions.ask.com/ping?sitemap=' . urlencode( get_bloginfo('url') . '/sitemap.xml' );
+    @file_get_contents( $pingurl ); // Until WP(MU) 2.7 comes along with it's HTTP API, file_get_contents() should do for now (hopefully)
+  }
+  
+  // Notify Ask of a sitemap change
+  function PingYahoo() {
+    global $wpdb;
+    $pingurl = 'http://search.yahooapis.com/SiteExplorerService/V1/ping?sitemap=' . urlencode( get_bloginfo('url') . '/sitemap.xml' );
+    @file_get_contents( $pingurl ); // Until WP(MU) 2.7 comes along with it's HTTP API, file_get_contents() should do for now (hopefully)
+  }
 
 	// Generate the contents of the sitemap and cache it to a file
 	function GenerateSitemap( $blogid ) {
@@ -86,7 +93,7 @@ class Tigrish_SimpleSitemaps {
 		$site_pages   = get_posts( 'numberposts=-1&post_type=page&orderby=menu_order' );
 		$numberposts  = $this->maxlinks - count($site_pages);
 		$site_posts   = get_posts( 'numberposts=' . $numberposts . '&orderby=date&order=DESC' );
-		$linked_items = array_merge($site_posts, $site_pages); // posts are first
+		$linked_items = array_merge($site_pages, $site_posts); // pages are first
 
 		$content  = '<?xml version="1.0" encoding="UTF-8"?' . ">\n";
 		$content .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
@@ -98,7 +105,7 @@ class Tigrish_SimpleSitemaps {
 			$content .= "	<url>\n";
 			$content .= '		<loc>' . get_permalink( $post->ID ) . "</loc>\n";
 			$content .= '		<lastmod>' . mysql2date( 'Y-m-d\TH:i:s', $post->post_modified_gmt ) . "+00:00</lastmod>\n";
-			$content .= '		<priority>' . number_format( $priority, 1 ) . "</priority>\n";
+			$content .= "		<priority>1.0</priority>\n";
 			$content .= "	</url>\n";
 
 			$priority = $priority - $prioritydiff;
